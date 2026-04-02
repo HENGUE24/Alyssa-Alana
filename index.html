@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>RSVP Jardim Encantado - 1° Aniversário da Alyssa Alana</title>
+  <!-- Fontes divertidas e infantis -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fredoka+One&family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+  <!-- Biblioteca de confetes -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+  <!-- Biblioteca jsPDF para geração de PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #e0f3e8 0%, #f9eef5 100%);
+      min-height: 100vh;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Elementos decorativos do jardim */
+    .garden-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .garden-bg::before {
+      content: "🌸";
+      font-size: 80px;
+      position: absolute;
+      bottom: 5%;
+      left: 2%;
+      opacity: 0.25;
+      animation: flutuar 14s infinite ease-in-out;
+    }
+
+    .garden-bg::after {
+      content: "🦋";
+      font-size: 65px;
+      position: absolute;
+      top: 15%;
+      right: 3%;
+      opacity: 0.3;
+      animation: voar 18s infinite alternate;
+    }
+
+    @keyframes flutuar {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-25px) rotate(5deg); }
+    }
+
+    @keyframes voar {
+      0% { transform: translateX(0px) rotate(0deg); }
+      100% { transform: translateX(30px) rotate(10deg); }
+    }
+
+    /* Container principal */
+    .main-container {
+      max-width: 1000px;
+      margin: 20px auto;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(3px);
+      border-radius: 70px 70px 70px 40px;
+      box-shadow: 0 25px 40px rgba(120, 70, 80, 0.2);
+      overflow: hidden;
+      position: relative;
+      z-index: 2;
+      border: 2px solid #ffe6f0;
+    }
+
+    /* Seção do vídeo principal */
+    .video-section {
+      background: #cfe8dc;
+      padding: 30px 30px 20px 30px;
+      text-align: center;
+      border-bottom: 5px solid #fbc4d0;
+    }
+
+    .video-section h2 {
+      font-family: 'Gloria Hallelujah', cursive;
+      color: #7b4b5e;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .video-wrapper {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+      border-radius: 55px;
+      overflow: hidden;
+      box-shadow: 0 20px 30px rgba(0,0,0,0.2);
+      background: #1a2a1f;
+    }
+
+    video {
+      width: 100%;
+      display: block;
+      border-radius: 55px;
+      background: #1a2a1f;
+      cursor: pointer;
+    }
+
+    .video-control-note {
+      margin-top: 12px;
+      font-size: 0.85rem;
+      color: #6b4c5a;
+      background: #fff2e6c9;
+      display: inline-block;
+      padding: 5px 15px;
+      border-radius: 40px;
+    }
+
+    /* Botão para pular o vídeo (opcional, mas útil) */
+    .skip-btn {
+      background: #b9d8b3;
+      color: #4f3b44;
+      font-size: 0.9rem;
+      padding: 8px 18px;
+      margin-top: 12px;
+      width: auto;
+      border-radius: 40px;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      display: inline-block;
+      transition: 0.2s;
+    }
+
+    .skip-btn:hover {
+      background: #a2c79a;
+      transform: scale(1.02);
+    }
+
+    /* Formulário (inicialmente escondido) */
+    .form-section {
+      display: none;
+      padding: 35px 30px 45px;
+      background: #fffef8;
+      transition: all 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      animation: fadeSlideUp 0.6s ease-out;
+    }
+
+    .form-section.show-form {
+      display: block;
+    }
+
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(35px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Detalhes do evento com tema jardim */
+    .event-details {
+      background: #faf0e6;
+      border-radius: 50px;
+      padding: 18px 20px;
+      margin-bottom: 30px;
+      text-align: center;
+      border-left: 12px solid #f7b0c2;
+      border-right: 4px solid #d4e2c6;
+      box-shadow: 0 8px 12px rgba(0,0,0,0.03);
+    }
+
+    .event-details p {
+      font-size: 1.1rem;
+      margin: 8px 0;
+      color: #6e3b4f;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .event-details span {
+      background: #fff2e9;
+      padding: 5px 15px;
+      border-radius: 40px;
+    }
+
+    .form-group {
+      margin-bottom: 28px;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      color: #b35f7a;
+      margin-bottom: 10px;
+      font-size: 1.05rem;
+    }
+
+    .required-star {
+      color: #e8436e;
+      margin-left: 4px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 14px 18px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1rem;
+      border: 2px solid #ffe0e7;
+      border-radius: 60px;
+      background-color: #fffcf5;
+      transition: all 0.2s;
+      outline: none;
+      font-weight: 500;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #f59aba;
+      box-shadow: 0 0 0 4px #ffc0d080;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 30px;
+      background: #fff4f0;
+      padding: 12px 20px;
+      border-radius: 80px;
+      border: 2px solid #ffe0e8;
+      flex-wrap: wrap;
+    }
+
+    .radio-group label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      accent-color: #e887a7;
+    }
+
+    .conditional-fields {
+      background: #fef9f5;
+      border-radius: 45px;
+      padding: 15px 20px;
+      margin-top: 15px;
+      border: 1px solid #fad5e0;
+    }
+
+    .inline-group {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .inline-group .form-group {
+      flex: 1;
+      min-width: 130px;
+    }
+
+    button {
+      background: linear-gradient(95deg, #f5a3b9, #ff84aa);
+      border: none;
+      width: 100%;
+      padding: 16px;
+      font-size: 1.4rem;
+      font-weight: bold;
+      font-family: 'Fredoka One', cursive;
+      color: white;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 12px 18px #fbb0c470;
+      transition: transform 0.1s, box-shadow 0.2s;
+      letter-spacing: 1px;
+      margin-top: 20px;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    .error-msg {
+      color: #e63946;
+      font-size: 0.8rem;
+      margin-top: 6px;
+      padding-left: 12px;
+      font-weight: 600;
+    }
+
+    /* Modal de agradecimento */
+    .modal-thanks {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(85, 55, 65, 0.85);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-card {
+      background: #fffaf2;
+      max-width: 500px;
+      width: 90%;
+      border-radius: 65px;
+      text-align: center;
+      padding: 30px 25px 35px;
+      box-shadow: 0 25px 35px #d9a7b9;
+      border: 3px solid #ffe0b5;
+      animation: bouncePop 0.4s ease-out;
+    }
+
+    @keyframes bouncePop {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-card h3 {
+      font-family: 'Fredoka One', cursive;
+      color: #cf6f8f;
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+
+    .modal-card p {
+      font-size: 1.2rem;
+      margin: 15px 0;
+      color: #5a3a48;
+      line-height: 1.4;
+    }
+
+    .modal-card .thanks-icon {
+      font-size: 4rem;
+      margin: 10px 0;
+    }
+
+    .close-modal-btn {
+      background: #fbb6cb;
+      color: #542c3b;
+      font-weight: bold;
+      padding: 12px 28px;
+      border-radius: 40px;
+      width: auto;
+      display: inline-block;
+      margin-top: 15px;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .close-modal-btn:hover {
+      background: #ffa5c0;
+      transform: scale(1.02);
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.75rem;
+      padding: 18px;
+      background: #e8f3e6;
+      color: #91748a;
+      border-top: 2px solid #f8cfdd;
+    }
+
+    @media (max-width: 650px) {
+      .video-section { padding: 20px; }
+      .form-section { padding: 25px 20px; }
+      .radio-group { flex-direction: column; gap: 12px; background: transparent; padding: 0; }
+      .modal-card h3 { font-size: 1.5rem; }
+      .modal-card p { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="garden-bg"></div>
+
+<div class="main-container">
+  <!-- SEÇÃO DO VÍDEO (PRIMEIRO) -->
+  <div class="video-section">
+    <h2>✨ Assista ao nosso convite especial ✨ <span>🎬</span></h2>
+    <div class="video-wrapper">
+      <video id="conviteVideo" controls playsinline>
+        <!-- 
+          ⚠️ IMPORTANTE: Substitua o src abaixo pelo link público do seu vídeo!
+          Você pode hospedar o vídeo gratuitamente em:
+          - Google Drive (gerar link direto)
+          - OneDrive (link direto)
+          - ou no mesmo servidor do site (se usar hospedagem como Netlify, GitHub Pages, etc.)
+        -->
+        <source src="MP4/JARDIM.mp4" type="video/mp4">
+        Seu navegador não suporta vídeo.
+      </video>
+    </div>
+    <div class="video-control-note">
+      🎀 Após assistir até o fim, o formulário aparecerá magicamente! 🎀
+    </div>
+    <button class="skip-btn" id="skipVideoBtn">🌸 Já assisti? Abrir formulário 🌸</button>
+    <p style="font-size:0.8rem; margin-top:12px; color:#aa7b8c;">
+        <!-- -🌟 Dica: Para usar SEU próprio vídeo, edite a linha "src" dentro da tag &lt;video&gt; com o link do seu arquivo hospedado. Veja as dicas de hospedagem no final da página.
+    -->
+      </p>
+  </div>
+
+  <!-- FORMULÁRIO RSVP (INICIALMENTE ESCONDIDO) -->
+  <div id="formSection" class="form-section">
+    <div class="event-details">
+      <p>🌸 <span>1° Aniversário da Alyssa Alana</span> 🌸</p>
+      <p>📅 <span>25 de Abril de 2026</span> &nbsp;|&nbsp; 🕧 <span>12:30</span></p>
+      <p>📍 <span>Rua de frente ao Ísia, sentido Kilamba</span> 🦋</p>
+      <p>🗺️ <a href="https://www.google.com/maps/place/8%C2%B058'51.5%22S+13%C2%B010'18.1%22E/@-8.980958,13.169117,17z/data=!3m1!4b1!4m4!3m3!8m2!3d-8.980958!4d13.1716919?hl=pt-BR&entry=ttu&g_ep=EgoyMDI2MDMyNC4wIKXMDSoASAFQAw%3D%3D" target="_blank" style="color: #7b5a8c; text-decoration: underline; font-weight: bold;">Ver localização no Google Maps</a> 🗺️</p>
+      <p>🎀 Jardim Encantado - Venha celebrar com a gente! 🎀</p>
+    </div>
+
+    <form id="rsvpForm">
+      <div class="form-group">
+        <label>Nome completo do convidado <span class="required-star">*</span></label>
+        <input type="text" id="nomeConvidado" placeholder="Ex: Ana Clara Oliveira" autocomplete="off">
+        <div class="error-msg" id="errorNome"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Você comparecerá? <span class="required-star">*</span></label>
+        <div class="radio-group">
+          <label><input type="radio" name="comparece" value="sim"> 🎉 Sim, quero ir!</label>
+          <label><input type="radio" name="comparece" value="nao"> 🌿 Infelizmente não</label>
+        </div>
+        <div class="error-msg" id="errorComparece"></div>
+      </div>
+
+      <div id="camposSim" style="display: none;">
+        <div class="conditional-fields">
+          <div class="inline-group">
+            <div class="form-group">
+              <label>Quantos adultos? <span class="required-star">*</span></label>
+              <input type="number" id="adultos" min="0" value="1" step="1">
+            </div>
+            <div class="form-group">
+              <label>Quantas crianças? </label>
+              <input type="number" id="criancasQtde" min="0" value="0" step="1">
+            </div>
+          </div>
+          <div class="form-group" id="grupoIdadesCriancas" style="display: none;">
+            <label>Idade(s) das crianças (ex: 2 anos, 8 meses) <span class="required-star" id="idadesRequiredStar">*</span></label>
+            <input type="text" id="idadesCriancas" placeholder="Ex: 3 anos e 6 meses, 1 ano">
+            <div class="error-msg" id="errorIdades"></div>
+          </div>
+          <div class="form-group">
+            <label>🍰 Alguma restrição alimentar? (opcional)</label>
+            <textarea id="restricoes" rows="2" placeholder="Alergias, intolerâncias, preferências..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" id="btnConfirmar">✨ CONFIRMAR PRESENÇA ✨</button>
+    </form>
+  </div>
+  <footer>
+    🌼 Após confirmar, você receberá um PDF convite e sua resposta será enviada para o WhatsApp da mamãe Gui. 🌼 <br>
+    💖 Sua resposta é muito especial para nós! Jardim Encantado aguarda você.
+  </footer>
+</div>
+
+<!-- MODAL DE AGRADECIMENTO -->
+<div id="modalThanks" class="modal-thanks">
+  <div class="modal-card">
+    <div class="thanks-icon">🎉💖🎀</div>
+    <h3>Muito obrigado(a)!</h3>
+    <p>Sua confirmação foi enviada com sucesso para a mamãe Gui no WhatsApp! 🌸<br>
+    O PDF convite foi gerado e será baixado automaticamente.<br>
+    Mal podemos esperar para celebrar com você!</p>
+    <button class="close-modal-btn" id="closeThanksModal">Fechar</button>
+  </div>
+</div>
+
+<script>
+  // ========= CONFIGURAÇÃO DO WHATSAPP (NÚMERO DA GUI) ==========
+  const WHATSAPP_NUMBER = "+244931179087";   // Número para testes
+
+  // Elementos
+  const videoElement = document.getElementById('conviteVideo');
+  const formSection = document.getElementById('formSection');
+  const skipBtn = document.getElementById('skipVideoBtn');
+
+  // Função para mostrar formulário com animação e confetes
+  function showForm() {
+    if (!formSection.classList.contains('show-form')) {
+      formSection.classList.add('show-form');
+      canvasConfetti({ particleCount: 100, spread: 70, origin: { y: 0.7 }, colors: ['#f7b0c2', '#c9e4c5', '#ffd966'] });
+      setTimeout(() => {
+        formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }
+
+  // Quando o vídeo terminar, exibir formulário
+  function handleVideoEnded() {
+    showForm();
+  }
+
+  // Botão para pular vídeo (fallback)
+  skipBtn.addEventListener('click', () => {
+    showForm();
+    canvasConfetti({ particleCount: 80, spread: 55, origin: { y: 0.5 } });
+  });
+
+  videoElement.addEventListener('ended', handleVideoEnded);
+
+  // ========== LÓGICA DO FORMULÁRIO ==========
+  const radioSim = document.querySelector('input[value="sim"]');
+  const radioNao = document.querySelector('input[value="nao"]');
+  const camposSimDiv = document.getElementById('camposSim');
+  const adultosInput = document.getElementById('adultos');
+  const criancasQtde = document.getElementById('criancasQtde');
+  const grupoIdades = document.getElementById('grupoIdadesCriancas');
+  const idadesCriancasInput = document.getElementById('idadesCriancas');
+  const btnConfirmar = document.getElementById('btnConfirmar');
+  const modalThanks = document.getElementById('modalThanks');
+  const closeThanksBtn = document.getElementById('closeThanksModal');
+  const nomeInput = document.getElementById('nomeConvidado');
+  const restricoesText = document.getElementById('restricoes');
+
+  function showError(elementId, message) {
+    const errorDiv = document.getElementById(elementId);
+    if (errorDiv) errorDiv.innerText = message || '';
+  }
+  
+  function clearErrors() {
+    showError('errorNome', '');
+    showError('errorComparece', '');
+    showError('errorIdades', '');
+  }
+  
+  function toggleConditionalFields() {
+    const selected = document.querySelector('input[name="comparece"]:checked');
+    if (selected && selected.value === 'sim') {
+      camposSimDiv.style.display = 'block';
+    } else {
+      camposSimDiv.style.display = 'none';
+    }
+    atualizarVisibilidadeIdades();
+  }
+  
+  function atualizarVisibilidadeIdades() {
+    const qtdCriancas = parseInt(criancasQtde.value, 10);
+    if (!isNaN(qtdCriancas) && qtdCriancas > 0) {
+      grupoIdades.style.display = 'block';
+    } else {
+      grupoIdades.style.display = 'none';
+      idadesCriancasInput.value = '';
+    }
+  }
+  
+  radioSim.addEventListener('change', toggleConditionalFields);
+  radioNao.addEventListener('change', toggleConditionalFields);
+  criancasQtde.addEventListener('input', atualizarVisibilidadeIdades);
+  
+  function validarFormulario() {
+    clearErrors();
+    let isValid = true;
+    
+    const nome = nomeInput.value.trim();
+    if (nome === "") {
+      showError('errorNome', 'Por favor, informe seu nome completo.');
+      isValid = false;
+    }
+    
+    const compareceRadio = document.querySelector('input[name="comparece"]:checked');
+    if (!compareceRadio) {
+      showError('errorComparece', 'Selecione se você vai comparecer ou não.');
+      isValid = false;
+      return false;
+    }
+    
+    const vaiComparecer = compareceRadio.value === 'sim';
+    
+    if (vaiComparecer) {
+      const adultosVal = parseInt(adultosInput.value, 10);
+      if (isNaN(adultosVal) || adultosVal < 0) {
+        showError('errorComparece', 'Quantidade de adultos inválida.');
+        isValid = false;
+      } else if (adultosVal === 0 && parseInt(criancasQtde.value, 10) === 0) {
+        showError('errorComparece', 'Informe ao menos 1 adulto ou criança.');
+        isValid = false;
+      }
+      
+      const qtdCriancas = parseInt(criancasQtde.value, 10);
+      if (!isNaN(qtdCriancas) && qtdCriancas > 0) {
+        const idadesTexto = idadesCriancasInput.value.trim();
+        if (idadesTexto === "") {
+          showError('errorIdades', 'Informe a(s) idade(s) das crianças.');
+          isValid = false;
+        }
+      }
+    }
+    return isValid;
+  }
+  
+  // Função para gerar PDF convite com tema Jardim Encantado
+  function gerarPDFConvite() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4'
+    });
+    
+    // Cores do tema
+    const pink = [245, 163, 185];
+    const green = [178, 209, 152];
+    const darkPink = [207, 111, 143];
+    
+    // Fundo suave
+    doc.setFillColor(255, 250, 242);
+    doc.rect(0, 0, 210, 297, 'F');
+    
+    // Bordas decorativas
+    doc.setDrawColor(pink[0], pink[1], pink[2]);
+    doc.setLineWidth(2);
+    doc.rect(10, 10, 190, 277);
+    
+    // Flores decorativas nos cantos
+    doc.setFontSize(25);
+    doc.setTextColor(pink[0], pink[1], pink[2]);
+    doc.text("🌸", 15, 25);
+    doc.text("🌸", 180, 25);
+    doc.text("🌸", 15, 285);
+    doc.text("🌸", 180, 285);
+    
+    // Título principal
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
+    doc.setTextColor(darkPink[0], darkPink[1], darkPink[2]);
+    doc.text("Jardim Encantado", 105, 45, { align: "center" });
+    doc.setFontSize(18);
+    doc.text("1° Aniversário da Alyssa Alana", 105, 58, { align: "center" });
+    
+    // Linha decorativa
+    doc.setDrawColor(green[0], green[1], green[2]);
+    doc.setLineWidth(0.8);
+    doc.line(40, 68, 170, 68);
+    
+    // Dados do convidado
+    doc.setFontSize(14);
+    doc.setTextColor(80, 60, 70);
+    doc.setFont("helvetica", "bold");
+    doc.text("Este convite pertence a:", 105, 85, { align: "center" });
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(16);
+    doc.setTextColor(darkPink[0], darkPink[1], darkPink[2]);
+    doc.text(nomeInput.value.trim(), 105, 100, { align: "center" });
+    
+    const compareceRadio = document.querySelector('input[name="comparece"]:checked');
+    const comparece = compareceRadio.value === 'sim' ? 'Sim, estarei presente!' : 'Não poderei comparecer';
+    doc.setFontSize(12);
+    doc.setTextColor(80, 60, 70);
+    doc.setFont("helvetica", "bold");
+    doc.text("Status:", 105, 115, { align: "center" });
+    doc.setFont("helvetica", "normal");
+    doc.text(comparece, 105, 125, { align: "center" });
+    
+    let yPos = 145;
+    
+    if (compareceRadio.value === 'sim') {
+      const adultos = parseInt(adultosInput.value, 10) || 0;
+      const criancas = parseInt(criancasQtde.value, 10) || 0;
+      
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "bold");
+      doc.text("Detalhes da presença:", 105, yPos, { align: "center" });
+      yPos += 8;
+      
+      doc.setFont("helvetica", "normal");
+      doc.text(`Adultos: ${adultos}`, 105, yPos, { align: "center" });
+      yPos += 7;
+      doc.text(`Crianças: ${criancas}`, 105, yPos, { align: "center" });
+      yPos += 7;
+      
+      if (criancas > 0) {
+        const idades = idadesCriancasInput.value.trim() || "Não informado";
+        doc.text(`Idades: ${idades}`, 105, yPos, { align: "center" });
+        yPos += 7;
+      }
+      
+      const restricoes = restricoesText.value.trim();
+      if (restricoes) {
+        doc.text(`Restrições alimentares: ${restricoes}`, 105, yPos, { align: "center" });
+        yPos += 7;
+      } else {
+        doc.text(`Restrições alimentares: Nenhuma`, 105, yPos, { align: "center" });
+        yPos += 7;
+      }
+      yPos += 10;
+    } else {
+      yPos += 15;
+    }
+    
+    // Informações do evento
+    doc.setFont("helvetica", "bold");
+    doc.text("Informações do Evento:", 105, yPos, { align: "center" });
+    yPos += 8;
+    doc.setFont("helvetica", "normal");
+    doc.text("25 de Abril de 2026 - 12:30", 105, yPos, { align: "center" });
+    yPos += 7;
+    doc.text("Rua de frente ao Isia, sentido Kilamba", 105, yPos, { align: "center" });
+    yPos += 7;
+        
+    // Mensagem final
+    yPos += 20;
+    doc.setFontSize(11);
+    doc.setTextColor(green[0], green[1], green[2]);
+    doc.setFont("helvetica", "italic");
+    doc.text("“Traga sua alegria e venha celebrar conosco!”", 105, yPos, { align: "center" });
+    
+    // Rodapé
+    doc.setFontSize(9);
+    doc.setTextColor(150, 120, 130);
+    doc.text("Jardim Encantado • Alyssa Alana 1 ano", 105, 285, { align: "center" });
+    doc.text("Este convite é sua entrada para a festa. Apresente na entrada.", 105, 290, { align: "center" });
+
+    return doc.output('blob');
+  }
+  
+  function construirMensagemWhatsApp() {
+    const nome = nomeInput.value.trim();
+    const compareceRadio = document.querySelector('input[name="comparece"]:checked');
+    const comparece = compareceRadio.value === 'sim' ? 'Sim, vou comparecer!' : 'Nao poderei comparecer';
+    
+    let mensagem = `1° Aniversário da Alyssa Alana%0A%0A`;
+    mensagem += `Nome: ${nome}%0A`;
+    mensagem += `Comparecimento: ${comparece}%0A`;
+    
+    if (compareceRadio.value === 'sim') {
+      const adultos = parseInt(adultosInput.value, 10) || 0;
+      const criancas = parseInt(criancasQtde.value, 10) || 0;
+      mensagem += `Adultos: ${adultos}%0A`;
+      mensagem += `Criancas: ${criancas}%0A`;
+      
+      if (criancas > 0) {
+        const idades = idadesCriancasInput.value.trim() || "Nao informado";
+        mensagem += `Idade(s) das criancas: ${idades}%0A`;
+      }
+      
+      const restricoes = restricoesText.value.trim();
+      mensagem += `Restricoes alimentares: ${restricoes || "Nenhuma"}%0A`;
+    }
+    
+    mensagem += `%0AData: 25/04/2026 as 12:30%0A`;
+    mensagem += `Local: Rua de frente ao Isia, sentido Kilamba%0A%0A`;
+    mensagem += `Confirmacao enviada via formulario Jardim Encantado`;
+    
+    return mensagem;
+  }
+  
+  function mostrarModalAgradecimento() {
+    modalThanks.style.display = 'flex';
+    canvasConfetti({ particleCount: 200, spread: 100, origin: { y: 0.5 }, colors: ['#ffb7c5', '#c9e4c5', '#f5e6b0', '#f7b0c2'] });
+  }
+  
+  function enviarParaWhatsApp() {
+    if (!validarFormulario()) {
+      const firstError = document.querySelector('.error-msg:not(:empty)');
+      if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return false;
+    }
+    
+    const pdfBlob = gerarPDFConvite();
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    
+    const downloadLink = document.createElement('a');
+    downloadLink.href = pdfUrl;
+    downloadLink.download = `Convite_Jardim_Encantado_${nomeInput.value.trim()}.pdf`;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    URL.revokeObjectURL(pdfUrl);
+    
+    const mensagem = construirMensagemWhatsApp();
+    const urlWhats = `https://wa.me/${WHATSAPP_NUMBER.replace(/\+/g, '')}?text=${mensagem}`;
+    
+    setTimeout(() => {
+      window.open(urlWhats, '_blank');
+    }, 500);
+    
+    mostrarModalAgradecimento();
+    
+    return true;
+  }
+  
+  btnConfirmar.addEventListener('click', (e) => {
+    e.preventDefault();
+    enviarParaWhatsApp();
+  });
+  
+  // Fechar modal de agradecimento
+  closeThanksBtn.addEventListener('click', () => {
+    modalThanks.style.display = 'none';
+  });
+  
+  modalThanks.addEventListener('click', (e) => {
+    if (e.target === modalThanks) {
+      modalThanks.style.display = 'none';
+    }
+  });
+  
+  // Inicialização: campos condicionais ocultos
+  window.addEventListener('DOMContentLoaded', () => {
+    toggleConditionalFields();
+    atualizarVisibilidadeIdades();
+    adultosInput.value = "";
+    criancasQtde.value = "";
+  });
+</script>
+
+</body>
+</html>
