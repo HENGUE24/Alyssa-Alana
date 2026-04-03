@@ -414,8 +414,8 @@
       <div class="form-group">
         <label>Você comparecerá? <span class="required-star">*</span></label>
         <div class="radio-group">
-          <label><input type="radio" name="comparece" value="sim"> 🎉 Sim, quero ir!</label>
-          <label><input type="radio" name="comparece" value="nao"> 🌿 Infelizmente não</label>
+          <label><input type="radio" name="comparece" value="sim">  Sim, quero ir!</label>
+          <label><input type="radio" name="comparece" value="nao">  Infelizmente não</label>
         </div>
         <div class="error-msg" id="errorComparece"></div>
       </div>
@@ -687,7 +687,7 @@
   function construirMensagemWhatsApp() {
     const nome = nomeInput.value.trim();
     const compareceRadio = document.querySelector('input[name="comparece"]:checked');
-    const comparece = compareceRadio.value === 'sim' ? '✅ Sim, vou comparecer! 🎉' : '❌ Não poderei comparecer 😢';
+    const comparece = compareceRadio.value === 'sim' ? ' Sim, vou comparecer! ' : ' Não poderei comparecer ';
     
     let mensagem = ` RSVP - 1° Aniversário da Alyssa Alana %0A%0A`;
     mensagem += ` Nome: ${nome}%0A`;
