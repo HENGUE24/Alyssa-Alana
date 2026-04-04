@@ -448,7 +448,7 @@
     </form>
   </div>
   <footer>
-    🌼 Após confirmar, você receberá um PDF convite e sua resposta será enviada para o WhatsApp da mamãe Gui. 🌼 <br>
+    🌼 Após confirmar, você receberá um PDF convite e sua resposta será enviada para o WhatsApp da mamãe Vau. 🌼 <br>
     💖 Sua resposta é muito especial para nós! Jardim Encantado aguarda você.
   </footer>
 </div>
@@ -458,7 +458,7 @@
   <div class="modal-card">
     <div class="thanks-icon">🎉💖🎀</div>
     <h3>Muito obrigado(a)!</h3>
-    <p>Sua confirmação foi enviada com sucesso para a mamãe Gui no WhatsApp! 🌸<br>
+    <p>Sua confirmação foi enviada com sucesso para a mamãe Vau no WhatsApp! 🌸<br>
     O PDF convite será baixado automaticamente.<br>
     Mal podemos esperar para celebrar com você!</p>
     <button class="close-modal-btn" id="closeThanksModal">Fechar</button>
@@ -466,8 +466,8 @@
 </div>
 
 <script>
-  // ========= CONFIGURAÇÃO DO WHATSAPP (NÚMERO DA GUI) ==========
-  const WHATSAPP_NUMBER = "+244931179087";   // Número correto da mamãe Gui
+  // ========= CONFIGURAÇÃO DO WHATSAPP (NÚMERO DA VAU) ==========
+  const WHATSAPP_NUMBER = "+244923464003";   // Número correto da mamãe Vau
 
   // Elementos do formulário
   const radioSim = document.querySelector('input[value="sim"]');
@@ -738,7 +738,7 @@
     document.body.removeChild(downloadLink);
     URL.revokeObjectURL(pdfUrl);
     
-    // Enviar mensagem para o WhatsApp da mamãe Gui
+    // Enviar mensagem para o WhatsApp da mamãe Vau
     const mensagem = construirMensagemWhatsApp();
     const urlWhats = `https://wa.me/${WHATSAPP_NUMBER.replace(/\+/g, '')}?text=${mensagem}`;
     
