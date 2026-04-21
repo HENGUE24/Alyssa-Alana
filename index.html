@@ -1,15 +1,14 @@
+
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title> Jardim Encantado - 1° Aniversário da Alyssa Alana</title>
-  <!-- Fontes divertidas e infantis -->
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fredoka+One&family=Gloria+Hallelujah&display=swap" rel="stylesheet">
-  <!-- Biblioteca de confetes -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
-  <!-- Biblioteca jsPDF para geração de PDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+  <title>Elias Lekayi · Portfólio</title>
+  <!-- Font Awesome 6 (ícones) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts: Poppins e Montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -18,760 +17,451 @@
     }
 
     body {
-      font-family: 'Quicksand', sans-serif;
-      background: linear-gradient(135deg, #e0f3e8 0%, #f9eef5 100%);
-      min-height: 100vh;
-      padding: 16px;
-      position: relative;
-      overflow-x: hidden;
+      background: #faf7f0;  /* tom suave neutro que destaca castanho */
+      font-family: 'Inter', sans-serif;
+      line-height: 1.5;
+      color: #2c2418;
+      padding: 2rem 1rem;
     }
 
-    /* Elementos decorativos do jardim (flutuantes) */
-    .garden-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .garden-bg::before {
-      content: "🌸";
-      font-size: 70px;
-      position: absolute;
-      bottom: 5%;
-      left: 2%;
-      opacity: 0.25;
-      animation: flutuar 14s infinite ease-in-out;
-    }
-
-    .garden-bg::after {
-      content: "🦋";
-      font-size: 55px;
-      position: absolute;
-      top: 15%;
-      right: 3%;
-      opacity: 0.3;
-      animation: voar 18s infinite alternate;
-    }
-
-    @keyframes flutuar {
-      0% { transform: translateY(0px) rotate(0deg); }
-      100% { transform: translateY(-25px) rotate(5deg); }
-    }
-
-    @keyframes voar {
-      0% { transform: translateX(0px) rotate(0deg); }
-      100% { transform: translateX(30px) rotate(10deg); }
-    }
-
-    /* Container principal */
-    .main-container {
-      max-width: 850px;
-      margin: 20px auto;
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(3px);
-      border-radius: 60px 60px 60px 40px;
-      box-shadow: 0 25px 40px rgba(120, 70, 80, 0.2);
+    /* container principal - cartão branco com detalhes castanhos */
+    .portfolio-card {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 2rem;
+      box-shadow: 0 20px 35px -12px rgba(90, 55, 25, 0.15);
       overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    /* conteúdo interno */
+    .portfolio-inner {
+      padding: 2rem 2rem 2.5rem;
+    }
+
+    /* ===== SEÇÃO PERFIL ===== */
+    .profile-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #e7ddd0;
+      padding-bottom: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .profile-picture {
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    .avatar-container {
       position: relative;
-      z-index: 2;
-      border: 2px solid #ffe6f0;
+      width: 160px;
+      height: 160px;
+      margin: 0 auto;
     }
 
-    /* Cabeçalho festivo (sem vídeo) */
-    .hero-header {
-      background: linear-gradient(135deg, #cfe8dc, #f8dce8);
-      padding: 30px 20px;
-      text-align: center;
-      border-bottom: 5px solid #fbc4d0;
-    }
-
-    .hero-header h1 {
-      font-family: 'Fredoka One', cursive;
-      font-size: 2.5rem;
-      color: #cf6f8f;
-      text-shadow: 3px 3px 0 #ffe0b5;
-      margin-bottom: 8px;
-      word-break: break-word;
-    }
-
-    .hero-header p {
-      font-size: 1.2rem;
-      color: #7b4b5e;
-      font-weight: 600;
-      background: rgba(255, 255, 255, 0.7);
-      display: inline-block;
-      padding: 6px 20px;
-      border-radius: 50px;
-    }
-
-    /* Formulário sempre visível */
-    .form-section {
-      padding: 30px 25px 40px;
-      background: #fffef8;
-    }
-
-    /* Detalhes do evento */
-    .event-details {
-      background: #faf0e6;
-      border-radius: 50px;
-      padding: 18px 20px;
-      margin-bottom: 30px;
-      text-align: center;
-      border-left: 12px solid #f7b0c2;
-      border-right: 4px solid #d4e2c6;
-      box-shadow: 0 8px 12px rgba(0,0,0,0.03);
-    }
-
-    .event-details p {
-      font-size: 1rem;
-      margin: 8px 0;
-      color: #6e3b4f;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .event-details span {
-      background: #fff2e9;
-      padding: 4px 12px;
-      border-radius: 40px;
-    }
-
-    .event-details a {
-      color: #7b5a8c;
-      text-decoration: underline;
-      font-weight: bold;
-      word-break: break-word;
-    }
-
-    .form-group {
-      margin-bottom: 24px;
-    }
-
-    label {
-      display: block;
-      font-weight: 700;
-      color: #b35f7a;
-      margin-bottom: 8px;
-      font-size: 1rem;
-    }
-
-    .required-star {
-      color: #e8436e;
-      margin-left: 4px;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 12px 16px;
-      font-family: 'Quicksand', sans-serif;
-      font-size: 1rem;
-      border: 2px solid #ffe0e7;
-      border-radius: 50px;
-      background-color: #fffcf5;
-      transition: all 0.2s;
-      outline: none;
-      font-weight: 500;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: #f59aba;
-      box-shadow: 0 0 0 3px #ffc0d080;
-    }
-
-    .radio-group {
-      display: flex;
-      gap: 20px;
-      background: #fff4f0;
-      padding: 10px 16px;
-      border-radius: 80px;
-      border: 2px solid #ffe0e8;
-      flex-wrap: wrap;
-    }
-
-    .radio-group label {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 600;
-      margin: 0;
-      cursor: pointer;
-    }
-
-    input[type="radio"] {
-      width: 18px;
-      height: 18px;
-      accent-color: #e887a7;
-    }
-
-    .conditional-fields {
-      background: #fef9f5;
-      border-radius: 45px;
-      padding: 15px 18px;
-      margin-top: 15px;
-      border: 1px solid #fad5e0;
-    }
-
-    .inline-group {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    .inline-group .form-group {
-      flex: 1;
-      min-width: 120px;
-    }
-
-    button {
-      background: linear-gradient(95deg, #f5a3b9, #ff84aa);
-      border: none;
-      width: 100%;
-      padding: 14px;
-      font-size: 1.3rem;
-      font-weight: bold;
-      font-family: 'Fredoka One', cursive;
-      color: white;
-      border-radius: 50px;
-      cursor: pointer;
-      box-shadow: 0 8px 14px #fbb0c470;
-      transition: transform 0.1s, box-shadow 0.2s;
-      letter-spacing: 1px;
-      margin-top: 20px;
-    }
-
-    button:active {
-      transform: scale(0.97);
-    }
-
-    .error-msg {
-      color: #e63946;
-      font-size: 0.75rem;
-      margin-top: 5px;
-      padding-left: 12px;
-      font-weight: 600;
-    }
-
-    /* Modal de agradecimento */
-    .modal-thanks {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
+    .avatar-img {
       width: 100%;
       height: 100%;
-      background-color: rgba(85, 55, 65, 0.85);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(8px);
-      padding: 16px;
-    }
-
-    .modal-card {
-      background: #fffaf2;
-      max-width: 480px;
-      width: 90%;
-      border-radius: 55px;
-      text-align: center;
-      padding: 25px 20px 30px;
-      box-shadow: 0 25px 35px #d9a7b9;
-      border: 3px solid #ffe0b5;
-      animation: bouncePop 0.4s ease-out;
-    }
-
-    @keyframes bouncePop {
-      0% { transform: scale(0.8); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    .modal-card h3 {
-      font-family: 'Fredoka One', cursive;
-      color: #cf6f8f;
-      font-size: 1.8rem;
-      margin-bottom: 12px;
-    }
-
-    .modal-card p {
-      font-size: 1rem;
-      margin: 12px 0;
-      color: #5a3a48;
-      line-height: 1.4;
-    }
-
-    .modal-card .thanks-icon {
-      font-size: 3.5rem;
-      margin: 8px 0;
-    }
-
-    .close-modal-btn {
-      background: #fbb6cb;
-      color: #542c3b;
-      font-weight: bold;
-      padding: 10px 24px;
-      border-radius: 40px;
-      width: auto;
-      display: inline-block;
-      margin-top: 12px;
-      font-size: 0.95rem;
-      border: none;
-      cursor: pointer;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid #b87c4f;  /* castanho médio */
+      box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+      background: #f3ede7;
       transition: 0.2s;
     }
 
-    .close-modal-btn:hover {
-      background: #ffa5c0;
-      transform: scale(1.02);
+    .upload-btn {
+      background: #8b5a2b; /* castanho principal */
+      color: white;
+      border: none;
+      padding: 0.4rem 0.9rem;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s;
+      font-family: inherit;
+    }
+
+    .upload-btn:hover {
+      background: #6a421f;
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-info h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #6b3f1c;  /* castanho escuro elegante */
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.3px;
+    }
+
+    .badge-academic {
+      background: #f1e7de;
+      color: #784a21;
+      display: inline-block;
+      padding: 0.25rem 1rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .info-text {
+      font-size: 1rem;
+      color: #4a3a2a;
+      margin-top: 0.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .info-text i {
+      color: #9b6a3c;
+      width: 1.6rem;
+    }
+
+    /* ===== BOTÕES DE CONTATO (API DIRECTA) ===== */
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1.5rem 0 1rem;
+    }
+
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      border: 1.5px solid #d9c6b2;
+      padding: 0.7rem 1.5rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #5c3c1e;
+      text-decoration: none;
+      transition: all 0.25s;
+      cursor: pointer;
+    }
+
+    .contact-btn i {
+      font-size: 1.2rem;
+      color: #9b6a3c;
+    }
+
+    .contact-btn:hover {
+      background: #f7ede3;
+      border-color: #b87c4f;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    /* grid info dupla */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    .info-card {
+      background: #fefcf9;
+      border-radius: 1.5rem;
+      padding: 1.4rem 1.8rem;
+      box-shadow: 0 4px 12px rgba(90, 55, 25, 0.05);
+      border: 1px solid #f0e6dc;
+    }
+
+    .info-card h3 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #754e28;
+      margin-bottom: 1.2rem;
+      border-left: 4px solid #b87c4f;
+      padding-left: 0.75rem;
+    }
+
+    .info-list {
+      list-style: none;
+    }
+
+    .info-list li {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .info-list li i {
+      color: #9b6a3c;
+      font-size: 1.1rem;
+      margin-top: 0.2rem;
+      min-width: 1.4rem;
+    }
+
+    .exp-item {
+      margin-bottom: 1.3rem;
+    }
+
+    .exp-title {
+      font-weight: 700;
+      color: #4e3519;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .exp-period {
+      font-size: 0.8rem;
+      font-weight: 400;
+      background: #ece2d7;
+      padding: 0.2rem 0.6rem;
+      border-radius: 30px;
+      color: #6b421f;
+    }
+
+    .exp-desc {
+      font-size: 0.9rem;
+      color: #3b2c1c;
+      margin-top: 0.3rem;
+      line-height: 1.4;
+    }
+
+    .languages span {
+      background: #ede3d9;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-right: 0.6rem;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+      color: #5a3a1c;
+    }
+
+    .address-block {
+      background: #f7f1ea;
+      padding: 0.8rem 1rem;
+      border-radius: 1rem;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      display: inline-block;
+      width: 100%;
+    }
+
+    hr {
+      margin: 1rem 0;
+      border: 0;
+      height: 1px;
+      background: linear-gradient(to right, #e2d4c6, transparent);
     }
 
     footer {
       text-align: center;
-      font-size: 0.7rem;
-      padding: 15px;
-      background: #e8f3e6;
-      color: #91748a;
-      border-top: 2px solid #f8cfdd;
+      margin-top: 2rem;
+      font-size: 0.75rem;
+      color: #aa8b6e;
+      border-top: 1px solid #efE5db;
+      padding-top: 1.5rem;
     }
 
-    /* Ajustes para telas muito pequenas */
-    @media (max-width: 550px) {
-      body {
-        padding: 10px;
+    @media (max-width: 680px) {
+      .portfolio-inner {
+        padding: 1.5rem;
       }
-      .hero-header h1 {
-        font-size: 1.8rem;
-      }
-      .hero-header p {
-        font-size: 1rem;
-      }
-      .form-section {
-        padding: 20px 16px;
-      }
-      .radio-group {
+      .profile-section {
         flex-direction: column;
-        gap: 10px;
-        background: transparent;
-        padding: 0;
-        border: none;
+        text-align: center;
       }
-      .radio-group label {
-        background: #fff4f0;
-        padding: 8px 12px;
-        border-radius: 60px;
-        border: 1px solid #ffe0e8;
+      .info-text {
+        justify-content: center;
       }
-      .inline-group {
-        flex-direction: column;
-        gap: 12px;
+      .contact-actions {
+        justify-content: center;
       }
-      button {
-        font-size: 1.1rem;
-        padding: 12px;
+      .profile-info h1 {
+        font-size: 1.7rem;
       }
-      .modal-card {
-        width: 95%;
-        padding: 20px 15px;
+      .info-card {
+        padding: 1.2rem;
       }
-      .modal-card h3 {
-        font-size: 1.5rem;
-      }
+    }
+
+    /* estilo para input file escondido */
+    #fileUpload {
+      display: none;
+    }
+
+    /* ajustes nos links */
+    a[href^="tel"], a[href^="mailto"], .wa-link {
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
-<div class="garden-bg"></div>
-
-<div class="main-container">
-  <!-- CABEÇALHO FESTIVO -->
-  <div class="hero-header">
-    <h1>🌸 Alyssa Alana 🌸</h1>
-    <p>1° Aniversário • Jardim Encantado</p>
-  </div>
-
-  <!-- FORMULÁRIO RSVP -->
-  <div class="form-section">
-    <div class="event-details">
-      <p>📅 <span>25 de Abril de 2026</span> &nbsp;|&nbsp; 🕧 <span>12:30</span></p>
-      <p>📍 <span>Rua de frente ao Ísia, sentido Kilamba</span> 🦋</p>
-      <p>🗺️ <a href="https://www.google.com/maps/place/8%C2%B058'51.5%22S+13%C2%B010'18.1%22E/@-8.980958,13.169117,17z/data=!3m1!4b1!4m4!3m3!8m2!3d-8.980958!4d13.1716919?hl=pt-BR&entry=ttu&g_ep=EgoyMDI2MDMyNC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">Ver localização no Google Maps</a> 🗺️</p>
-      <p>🎀 Venha celebrar com a gente! 🎀</p>
+<div class="portfolio-card">
+  <div class="portfolio-inner">
+    
+    <!-- SEÇÃO PERFIL + FOTO -->
+    <div class="profile-section">
+      <div class="profile-picture">
+        <div class="avatar-container">
+          <img id="profileImage" class="avatar-img" src="PHOTO/WhatsApp Image 2026-04-21 at 10.07.40.png" alt="Foto de perfil">
+        </div>
+      
+      </div>
+      <div class="profile-info">
+        <h1>Elias Manuel Fernandes Lekayi</h1>
+        <div class="badge-academic">
+          <i class="fas fa-graduation-cap"></i> Finalista · Informática de Gestão
+        </div>
+        <div class="info-text">
+          <span><i class="fas fa-map-marker-alt"></i> Mulenvos, Rua das Acácias Rubras</span>
+          <span><i class="fas fa-language"></i> Português · Lingala</span>
+        </div>
+        <!-- BOTÕES COM LINKS DIRETOS PARA TELEFONE, E-MAIL E WHATSAPP (API mobile) -->
+        <div class="contact-actions">
+          <a href="tel:+244921243707" class="contact-btn"><i class="fas fa-phone-alt"></i> Ligar +244 921 243 707</a>
+          <a href="mailto:eliaslekayi06@gmail.com" class="contact-btn"><i class="fas fa-envelope"></i> E-mail</a>
+          <a href="https://wa.me/244921243707?text=Olá%20Elias,%20vim%20do%20seu%20portfólio!" target="_blank" class="contact-btn"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        </div>
+      </div>
     </div>
 
-    <form id="rsvpForm">
-      <div class="form-group">
-        <label>Nome completo do convidado <span class="required-star">*</span></label>
-        <input type="text" id="nomeConvidado" placeholder="Ex: Ana Clara Oliveira" autocomplete="off">
-        <div class="error-msg" id="errorNome"></div>
-      </div>
-
-      <div class="form-group">
-        <label>Você comparecerá? <span class="required-star">*</span></label>
-        <div class="radio-group">
-          <label><input type="radio" name="comparece" value="sim">  Sim, quero ir!</label>
-          <label><input type="radio" name="comparece" value="nao">  Infelizmente não</label>
+    <!-- INFORMAÇÕES DETALHADAS (GRID) -->
+    <div class="info-grid">
+      <!-- Coluna Esquerda: Formação + Idiomas + Competências -->
+      <div>
+        <div class="info-card">
+          <h3><i class="fas fa-user-graduate"></i> Formação & Habilidades</h3>
+          <ul class="info-list">
+            <li><i class="fas fa-laptop-code"></i> <strong>Área:</strong> Informática de Gestão (Finalista)</li>
+            <li><i class="fas fa-chart-line"></i> <strong>Ferramentas:</strong> Excel Avançado, Microsoft Word, Pacote Office</li>
+            <li><i class="fas fa-microchip"></i> <strong>Manutenção:</strong> Electrónica, reparação de equipamentos</li>
+            <li><i class="fas fa-wrench"></i> <strong>Mecânica geral:</strong> Diagnóstico e reparação automóvel</li>
+          </ul>
         </div>
-        <div class="error-msg" id="errorComparece"></div>
-      </div>
 
-      <div id="camposSim" style="display: none;">
-        <div class="conditional-fields">
-          <div class="inline-group">
-            <div class="form-group">
-              <label>Quantos adultos? <span class="required-star">*</span></label>
-              <input type="number" id="adultos" min="0" value="1" step="1">
-            </div>
-            <div class="form-group">
-              <label>Quantas crianças? </label>
-              <input type="number" id="criancasQtde" min="0" value="0" step="1">
-            </div>
+        <div class="info-card">
+          <h3><i class="fas fa-globe"></i> Línguas</h3>
+          <div class="languages">
+            <span><i class="fas fa-flag"></i> Português (Fluente)</span>
+            <span><i class="fas fa-comments"></i> Lingala (Avançado)</span>
           </div>
-          <div class="form-group" id="grupoIdadesCriancas" style="display: none;">
-            <label>Idade(s) das crianças (ex: 2 anos, 8 meses) <span class="required-star">*</span></label>
-            <input type="text" id="idadesCriancas" placeholder="Ex: 3 anos e 6 meses, 1 ano">
-            <div class="error-msg" id="errorIdades"></div>
-          </div>
-          <div class="form-group">
-            <label>🍰 Alguma restrição alimentar? (opcional)</label>
-            <textarea id="restricoes" rows="2" placeholder="Alergias, intolerâncias, preferências..."></textarea>
+          <hr>
+          <h3 style="margin-top: 0.5rem;"><i class="fas fa-address-card"></i> Contacto directo</h3>
+          <div class="address-block">
+            <i class="fas fa-phone-square-alt"></i> <strong>Celular:</strong> <a href="tel:+244921243707" style="color:#754e28; text-decoration: underline;">921 243 707</a><br>
+            <i class="fas fa-envelope"></i> <strong>Email:</strong> <a href="mailto:eliaslekayi06@gmail.com" style="color:#754e28;">eliaslekayi06@gmail.com</a><br>
+            <i class="fab fa-whatsapp"></i> <strong>WhatsApp:</strong> <a href="https://wa.me/244921243707" target="_blank" style="color:#754e28;">Iniciar conversa</a>
           </div>
         </div>
       </div>
 
-      <button type="button" id="btnConfirmar">✨ CONFIRMAR PRESENÇA ✨</button>
-    </form>
-  </div>
-  <footer>
-    🌼 Após confirmar, você receberá um PDF convite e sua resposta será enviada para o WhatsApp da mamãe Vau. 🌼 <br>
-    💖 Sua resposta é muito especial para nós! Jardim Encantado aguarda você.
-  </footer>
-</div>
+      <!-- Coluna Direita: Experiência Profissional + Informações extras -->
+      <div>
+        <div class="info-card">
+          <h3><i class="fas fa-briefcase"></i> Experiência Profissional</h3>
+          <div class="exp-item">
+            <div class="exp-title">
+              <span><i class="fas fa-chart-simple"></i> Excel & Word · Gestão de dados</span>
+              <span class="exp-period">Contínuo</span>
+            </div>
+            <div class="exp-desc">Elaboração de relatórios, planilhas dinâmicas, tratamento de dados e documentos técnicos.</div>
+          </div>
+          <div class="exp-item">
+            <div class="exp-title">
+              <span><i class="fas fa-car"></i> Mecânico automóvel</span>
+              <span class="exp-period">2 anos</span>
+            </div>
+            <div class="exp-desc">Diagnóstico de falhas mecânicas, manutenção preventiva e corretiva, alinhamento e substituição de componentes.</div>
+          </div>
+          <div class="exp-item">
+            <div class="exp-title">
+              <span><i class="fas fa-microchip"></i> Técnico de Manutenção e Reparação Electrónica</span>
+              <span class="exp-period">1,5 anos</span>
+            </div>
+            <div class="exp-desc">Reparação de circuitos, soldagem, identificação de avarias em equipamentos electrónicos, manutenção de sistemas.</div>
+          </div>
+        </div>
 
-<!-- MODAL DE AGRADECIMENTO -->
-<div id="modalThanks" class="modal-thanks">
-  <div class="modal-card">
-    <div class="thanks-icon">🎉💖🎀</div>
-    <h3>Muito obrigado(a)!</h3>
-    <p>Sua confirmação foi enviada com sucesso para a mamãe Vau no WhatsApp! 🌸<br>
-    O PDF convite será baixado automaticamente.<br>
-    Mal podemos esperar para celebrar com você!</p>
-    <button class="close-modal-btn" id="closeThanksModal">Fechar</button>
+        <div class="info-card">
+          <h3><i class="fas fa-map-pin"></i> Morada & Localização</h3>
+          <ul class="info-list">
+            <li><i class="fas fa-home"></i> Mulenvos / Rua das Acácias Rubras, Luanda - Angola</li>
+            <li><i class="fas fa-clock"></i> Disponibilidade: Full-time / Estágio profissional</li>
+            <li><i class="fas fa-certificate"></i> Perfil multidisciplinar: tecnologia + mecânica + electrónica</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- rodapé com pequeno resumo e chamada para ação via API -->
+    <footer>
+      <p><i class="fas fa-mobile-alt"></i> Clique nos botões para ligar, enviar e-mail ou WhatsApp — acção directa no seu telemóvel.</p>
+      <p style="margin-top: 0.5rem;">© Elias Manuel Fernandes Lekayi · Portfólio profissional</p>
+    </footer>
   </div>
 </div>
 
 <script>
-  // ========= CONFIGURAÇÃO DO WHATSAPP (NÚMERO DA VAU) ==========
-  const WHATSAPP_NUMBER = "+244923464003";   // Número correto da mamãe Vau
+  // Funcionalidade para atualizar a imagem de perfil (upload local)
+  const uploadBtn = document.getElementById('uploadBtn');
+  const fileInput = document.getElementById('fileUpload');
+  const profileImg = document.getElementById('profileImage');
 
-  // Elementos do formulário
-  const radioSim = document.querySelector('input[value="sim"]');
-  const radioNao = document.querySelector('input[value="nao"]');
-  const camposSimDiv = document.getElementById('camposSim');
-  const adultosInput = document.getElementById('adultos');
-  const criancasQtde = document.getElementById('criancasQtde');
-  const grupoIdades = document.getElementById('grupoIdadesCriancas');
-  const idadesCriancasInput = document.getElementById('idadesCriancas');
-  const btnConfirmar = document.getElementById('btnConfirmar');
-  const modalThanks = document.getElementById('modalThanks');
-  const closeThanksBtn = document.getElementById('closeThanksModal');
-  const nomeInput = document.getElementById('nomeConvidado');
-  const restricoesText = document.getElementById('restricoes');
+  uploadBtn.addEventListener('click', () => {
+    fileInput.click();
+  });
 
-  function showError(elementId, message) {
-    const errorDiv = document.getElementById(elementId);
-    if (errorDiv) errorDiv.innerText = message || '';
-  }
-  
-  function clearErrors() {
-    showError('errorNome', '');
-    showError('errorComparece', '');
-    showError('errorIdades', '');
-  }
-  
-  function toggleConditionalFields() {
-    const selected = document.querySelector('input[name="comparece"]:checked');
-    if (selected && selected.value === 'sim') {
-      camposSimDiv.style.display = 'block';
-    } else {
-      camposSimDiv.style.display = 'none';
+  fileInput.addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file && (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/webp')) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        profileImg.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    } else if (file) {
+      alert('Por favor, seleccione uma imagem no formato PNG, JPG ou WEBP.');
+      fileInput.value = '';
     }
-    atualizarVisibilidadeIdades();
-  }
-  
-  function atualizarVisibilidadeIdades() {
-    const qtdCriancas = parseInt(criancasQtde.value, 10);
-    if (!isNaN(qtdCriancas) && qtdCriancas > 0) {
-      grupoIdades.style.display = 'block';
-    } else {
-      grupoIdades.style.display = 'none';
-      idadesCriancasInput.value = '';
-    }
-  }
-  
-  radioSim.addEventListener('change', toggleConditionalFields);
-  radioNao.addEventListener('change', toggleConditionalFields);
-  criancasQtde.addEventListener('input', atualizarVisibilidadeIdades);
-  
-  function validarFormulario() {
-    clearErrors();
-    let isValid = true;
-    
-    const nome = nomeInput.value.trim();
-    if (nome === "") {
-      showError('errorNome', 'Por favor, informe seu nome completo.');
-      isValid = false;
-    }
-    
-    const compareceRadio = document.querySelector('input[name="comparece"]:checked');
-    if (!compareceRadio) {
-      showError('errorComparece', 'Selecione se você vai comparecer ou não.');
-      isValid = false;
-      return false;
-    }
-    
-    const vaiComparecer = compareceRadio.value === 'sim';
-    
-    if (vaiComparecer) {
-      const adultosVal = parseInt(adultosInput.value, 10);
-      if (isNaN(adultosVal) || adultosVal < 0) {
-        showError('errorComparece', 'Quantidade de adultos inválida.');
-        isValid = false;
-      } else if (adultosVal === 0 && parseInt(criancasQtde.value, 10) === 0) {
-        showError('errorComparece', 'Informe ao menos 1 adulto ou criança.');
-        isValid = false;
-      }
-      
-      const qtdCriancas = parseInt(criancasQtde.value, 10);
-      if (!isNaN(qtdCriancas) && qtdCriancas > 0) {
-        const idadesTexto = idadesCriancasInput.value.trim();
-        if (idadesTexto === "") {
-          showError('errorIdades', 'Informe a(s) idade(s) das crianças.');
-          isValid = false;
-        }
-      }
-    }
-    return isValid;
-  }
-  
-  // Geração do PDF convite
-  function gerarPDFConvite() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: 'a4'
+  });
+
+  // API de contacto: já implementada via links nativos "tel:", "mailto:", "https://wa.me/"
+  // Adicionalmente, assegura que qualquer clique nos números alternativos também abra o discador
+  // (garantia extra de compatibilidade mobile)
+  const phoneLinks = document.querySelectorAll('a[href^="tel:"], a[href^="mailto:"], a[href*="wa.me"]');
+  phoneLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      // apenas permite o comportamento padrão, que é abrir a app nativa
+      // nenhum bloqueio; apenas garante rastreio opcional
+      console.log(`Redirecionando para: ${link.getAttribute('href')}`);
     });
-    
-    // Cores do tema
-    const pink = [245, 163, 185];
-    const green = [178, 209, 152];
-    const darkPink = [207, 111, 143];
-    
-    // Fundo suave
-    doc.setFillColor(255, 250, 242);
-    doc.rect(0, 0, 210, 297, 'F');
-    
-    // Bordas decorativas
-    doc.setDrawColor(pink[0], pink[1], pink[2]);
-    doc.setLineWidth(2);
-    doc.rect(10, 10, 190, 277);
-    
-    // Flores decorativas nos cantos
-    doc.setFontSize(25);
-    doc.setTextColor(pink[0], pink[1], pink[2]);
-    doc.text("", 15, 25);
-    doc.text("", 180, 25);
-    doc.text("", 15, 285);
-    doc.text("", 180, 285);
-    
-    // Título principal
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(22);
-    doc.setTextColor(darkPink[0], darkPink[1], darkPink[2]);
-    doc.text("Jardim Encantado", 105, 45, { align: "center" });
-    doc.setFontSize(18);
-    doc.text("1° Aniversário da Alyssa Alana", 105, 58, { align: "center" });
-    
-    // Linha decorativa
-    doc.setDrawColor(green[0], green[1], green[2]);
-    doc.setLineWidth(0.8);
-    doc.line(40, 68, 170, 68);
-    
-    // Dados do convidado
-    doc.setFontSize(14);
-    doc.setTextColor(80, 60, 70);
-    doc.setFont("helvetica", "bold");
-    doc.text("Este convite pertence a:", 105, 85, { align: "center" });
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(16);
-    doc.setTextColor(darkPink[0], darkPink[1], darkPink[2]);
-    doc.text(nomeInput.value.trim(), 105, 100, { align: "center" });
-    
-    const compareceRadio = document.querySelector('input[name="comparece"]:checked');
-    const comparece = compareceRadio.value === 'sim' ? 'Sim, estarei presente!' : 'Não poderei comparecer';
-    doc.setFontSize(12);
-    doc.setTextColor(80, 60, 70);
-    doc.setFont("helvetica", "bold");
-    doc.text("Status:", 105, 115, { align: "center" });
-    doc.setFont("helvetica", "normal");
-    doc.text(comparece, 105, 125, { align: "center" });
-    
-    let yPos = 145;
-    
-    if (compareceRadio.value === 'sim') {
-      const adultos = parseInt(adultosInput.value, 10) || 0;
-      const criancas = parseInt(criancasQtde.value, 10) || 0;
-      
-      doc.setFontSize(12);
-      doc.setFont("helvetica", "bold");
-      doc.text("Detalhes da presença:", 105, yPos, { align: "center" });
-      yPos += 8;
-      
-      doc.setFont("helvetica", "normal");
-      doc.text(`Adultos: ${adultos}`, 105, yPos, { align: "center" });
-      yPos += 7;
-      doc.text(`Crianças: ${criancas}`, 105, yPos, { align: "center" });
-      yPos += 7;
-      
-      if (criancas > 0) {
-        const idades = idadesCriancasInput.value.trim() || "Não informado";
-        doc.text(`Idades: ${idades}`, 105, yPos, { align: "center" });
-        yPos += 7;
-      }
-      
-      const restricoes = restricoesText.value.trim();
-      if (restricoes) {
-        doc.text(`Restrições alimentares: ${restricoes}`, 105, yPos, { align: "center" });
-        yPos += 7;
-      } else {
-        doc.text(`Restrições alimentares: Nenhuma`, 105, yPos, { align: "center" });
-        yPos += 7;
-      }
-      yPos += 10;
-    } else {
-      yPos += 15;
-    }
-    
-    // Informações do evento
-    doc.setFont("helvetica", "bold");
-    doc.text("Informações do Evento:", 105, yPos, { align: "center" });
-    yPos += 8;
-    doc.setFont("helvetica", "normal");
-    doc.text("25 de Abril de 2026 - 12:30", 105, yPos, { align: "center" });
-    yPos += 7;
-    doc.text("Rua de frente ao Isia, sentido Kilamba", 105, yPos, { align: "center" });
-    yPos += 7;
-        
-    // Mensagem final
-    yPos += 20;
-    doc.setFontSize(11);
-    doc.setTextColor(green[0], green[1], green[2]);
-    doc.setFont("helvetica", "italic");
-    doc.text("“Traga sua alegria e venha celebrar conosco!”", 105, yPos, { align: "center" });
-    
-    // Rodapé
-    doc.setFontSize(9);
-    doc.setTextColor(150, 120, 130);
-    doc.text("Jardim Encantado • Alyssa Alana 1 ano", 105, 285, { align: "center" });
-    doc.text("Este convite é sua entrada para a festa. Apresente na entrada.", 105, 290, { align: "center" });
+  });
 
-    return doc.output('blob');
-  }
-  
-  function construirMensagemWhatsApp() {
-    const nome = nomeInput.value.trim();
-    const compareceRadio = document.querySelector('input[name="comparece"]:checked');
-    const comparece = compareceRadio.value === 'sim' ? ' Sim, vou comparecer! ' : ' Não poderei comparecer ';
-    
-    let mensagem = ` 1° Aniversário da Alyssa Alana %0A%0A`;
-    mensagem += ` Nome: ${nome}%0A`;
-    mensagem += ` Comparecimento: ${comparece}%0A`;
-    
-    if (compareceRadio.value === 'sim') {
-      const adultos = parseInt(adultosInput.value, 10) || 0;
-      const criancas = parseInt(criancasQtde.value, 10) || 0;
-      mensagem += ` Adultos: ${adultos}%0A`;
-      mensagem += ` Crianças: ${criancas}%0A`;
-      
-      if (criancas > 0) {
-        const idades = idadesCriancasInput.value.trim() || "Não informado";
-        mensagem += ` Idade(s) das crianças: ${idades}%0A`;
-      }
-      
-      const restricoes = restricoesText.value.trim();
-      mensagem += ` Restrições alimentares: ${restricoes || "Nenhuma"}%0A`;
-    }
-    
-    mensagem += `%0A Data:  25/04/2026 às 12:30 %0A`;
-    mensagem += ` Local: Rua de frente ao Ísia, sentido Kilamba%0A%0A`;
-    mensagem += ` Confirmação enviada via formulário Jardim Encantado `;
-    
-    return mensagem;
-  }
-  
-  function mostrarModalAgradecimento() {
-    modalThanks.style.display = 'flex';
-    canvasConfetti({ particleCount: 200, spread: 100, origin: { y: 0.5 }, colors: ['#ffb7c5', '#c9e4c5', '#f5e6b0', '#f7b0c2'] });
-  }
-  
-  function enviarParaWhatsApp() {
-    if (!validarFormulario()) {
-      const firstError = document.querySelector('.error-msg:not(:empty)');
-      if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return false;
-    }
-    
-    // Gerar PDF e fazer download
-    const pdfBlob = gerarPDFConvite();
-    const pdfUrl = URL.createObjectURL(pdfBlob);
-    const downloadLink = document.createElement('a');
-    downloadLink.href = pdfUrl;
-    downloadLink.download = `Convite_Jardim_Encantado_${nomeInput.value.trim()}.pdf`;
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-    URL.revokeObjectURL(pdfUrl);
-    
-    // Enviar mensagem para o WhatsApp da mamãe Vau
-    const mensagem = construirMensagemWhatsApp();
-    const urlWhats = `https://wa.me/${WHATSAPP_NUMBER.replace(/\+/g, '')}?text=${mensagem}`;
-    
-    setTimeout(() => {
-      window.open(urlWhats, '_blank');
-    }, 500);
-    
-    mostrarModalAgradecimento();
-    return true;
-  }
-  
-  btnConfirmar.addEventListener('click', (e) => {
-    e.preventDefault();
-    enviarParaWhatsApp();
-  });
-  
-  closeThanksBtn.addEventListener('click', () => {
-    modalThanks.style.display = 'none';
-  });
-  
-  modalThanks.addEventListener('click', (e) => {
-    if (e.target === modalThanks) {
-      modalThanks.style.display = 'none';
-    }
-  });
-  
-  // Inicialização: campos condicionais ocultos e valores padrão
-  window.addEventListener('DOMContentLoaded', () => {
-    toggleConditionalFields();
-    atualizarVisibilidadeIdades();
-    adultosInput.value = "1";
-    criancasQtde.value = "0";
-  });
+  // Adicionar um pequeno efeito visual para mostrar que o portfolio está pronto para mobile
+  // Também podemos criar fallback para caso o usuário queira abrir WhatsApp com número já configurado
+  // O número de telefone com código +244 921 243 707 já está correcto.
 </script>
+
+<!-- Nota: A "API" solicitada é interpretada como links nativos que chamam apps do sistema (phone, email, WhatsApp).
+     Todas as acções: clicar no botão "Ligar", "E-mail", "WhatsApp" ou nos contactos secundários, levam directamente
+     ao discador/cliente de email/WhatsApp instalado no celular. -->
 </body>
 </html>
